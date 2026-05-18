@@ -24,17 +24,7 @@ Counsel context is accessed exclusively through the **Counsel MCP server**. This
 2. Call the most relevant Counsel MCP tool given the context — before drafting, editing, summarising, or doing anything else.
 3. Do not skip this step even if the task looks self-contained. The document or request in front of you exists within a broader project context that will improve your output.
 
-The Counsel MCP tools you will find available:
-
-- `list_clients` — enumerate clients
-- `list_projects` — enumerate active projects; primary discovery tool
-- `get_project_info` — canonical detail for a confirmed project
-- `list_tasks` — work items and status for a project
-- `list_emails` / `read_email` — message threads
-- `list_files` / `read_file` — file inventory and content
-- `project_search` — semantic search across projects; use for precedent or when `list_projects` does not match; works best when client is known
-- `email_search` — semantic search in emails
-- `document_search` — semantic search in project documents
+Discover Counsel MCP tools at runtime via `list_tools`, then choose tools by capability (project discovery, project details, task status, communications, files, and search) instead of relying on fixed names.
 
 In most cases, do not proceed with the task until at least one Counsel MCP tool has been called and its output has been read.
 
@@ -44,14 +34,20 @@ In most cases, do not proceed with the task until at least one Counsel MCP tool 
 
 - Choose the most appropriate Counsel MCP tool given what the user has provided (a document, a client name, a deal type, etc.) and call it.
 - If the result is ambiguous (e.g. the user mentions "a SAFE" but 7 SAFE projects exist), stop and ask the user to confirm which project before proceeding. Never assume.
-- `list_projects` returns all active projects and is a good default when context is thin. `project_search` is semantic and works best when a client or topic is known.
+- If context is thin, start with a broad listing/discovery/text search tool. If the user provides a client or topic, prefer a semantic search/discovery tool.
 
 ### Step 2: Load project context
 
-- Once the project is confirmed, call `get_project_info` and `list_tasks` as a baseline.
+- Once the project is confirmed, load canonical project details and current task/work-item status as a baseline.
 - Pull in email, file, and document context as needed for the specific task.
 
 ### Step 3: Use Counsel throughout the task
 
 - Keep querying as the task evolves. Context is not a one-shot load.
-- Use `project_search` and `document_search` to find similar projects across clients for precedent — what was done and crucially why. This is one of the highest-value things Counsel enables.
+- Use cross-project and document-level semantic search to find precedent across clients — what was done and crucially why. This is one of the highest-value things Counsel enables.
+
+### Step 4: Share source URLs when available
+
+- The user may want to verify context at the source.
+- Share URLs only when the Counsel MCP response includes valid canonical URLs.
+- If no valid canonical URLs are present, do not invent or infer URLs; simply omit them.
